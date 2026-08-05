@@ -56,7 +56,7 @@
     "directories": {
       "output": "release"
     },
-    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "artifactName": "qiaolegeqiao-${version}-${arch}.${ext}",
     "afterPack": "scripts/after-pack-mac.cjs",
     "files": [
       "dist/**/*",

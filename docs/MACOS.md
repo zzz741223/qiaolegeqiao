@@ -29,8 +29,8 @@ npm run dist:mac
 
 输出包括：
 
-- `敲了个敲-<version>-arm64.dmg` / `.zip`
-- `敲了个敲-<version>-x64.dmg` / `.zip`
+- `qiaolegeqiao-<version>-arm64.dmg` / `.zip`
+- `qiaolegeqiao-<version>-x64.dmg` / `.zip`
 
 项目的 `scripts/after-pack-mac.cjs` 会在无证书构建中执行稳定包标识的 ad-hoc 签名。可以用下面的命令验证解包后的应用：
 
