@@ -1,0 +1,64 @@
+name: Build macOS
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify source
+        run: |
+          npm test
+          npm run lint
+
+      - name: Build Intel and Apple Silicon packages
+        run: npm run dist:mac
+
+      - name: Verify ad-hoc signatures
+        run: |
+          mkdir -p signature-check
+          for archive in release/*.zip; do
+            destination="signature-check/$(basename "$archive" .zip)"
+            mkdir -p "$destination"
+            ditto -x -k "$archive" "$destination"
+            app_path="$(find "$destination" -maxdepth 1 -name '*.app' -print -quit)"
+            test -n "$app_path"
+            codesign --verify --deep --strict "$app_path"
+          done
+
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: qiaolegeqiao-macos-${{ github.ref_name }}
+          path: |
+            release/*.dmg
+            release/*.zip
+          if-no-files-found: error
+
+      - name: Attach packages to GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" release/*.dmg release/*.zip --clobber
