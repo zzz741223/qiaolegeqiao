@@ -44,8 +44,8 @@ codesign -dv --verbose=4 "release/mac-arm64/敲了个敲.app"
 `.github/workflows/build-macos.yml` 支持手动运行，也会在推送 `v*` 标签时构建两个架构。手动运行的产物位于工作流 Artifacts；标签构建还会自动创建或更新对应的 GitHub Release。
 
 ```bash
-git tag v0.3.0
-git push origin v0.3.0
+git tag v0.3.1
+git push origin v0.3.1
 ```
 
 ## 正式签名与公证
