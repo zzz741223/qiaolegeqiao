@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:lan": "node scripts/lan-smoke.cjs",
     "lint": "eslint .",
-    "dist:win": "npm run build && electron-builder --win nsis",
+    "dist:win": "npm run build && electron-builder --win nsis --publish never",
     "dist:mac": "npm run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false QIAO_ADHOC_SIGN=true electron-builder --mac dmg zip --x64 --arm64 --publish never",
     "dist:mac:arm64": "npm run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false QIAO_ADHOC_SIGN=true electron-builder --mac dmg zip --arm64 --publish never",
     "dist:mac:x64": "npm run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false QIAO_ADHOC_SIGN=true electron-builder --mac dmg zip --x64 --publish never",
